@@ -35,22 +35,7 @@
       font-size: 24px;
     }
   </style>
-  <script>
-    // Função para redirecionar para um grupo de WhatsApp aleatório
-    function redirecionar() {
-      var grupos = [
-        'https://wa.me/5512997822122?text=Oi%2C%20quero%20ver%20seus%20conteudos', // Grupo 1
-        'https://wa.me/5512997822122?text=Oi%2C%20quero%20ver%20seus%20conteudos', // Grupo 2
-        'https://wa.me/5512997822122?text=Oi%2C%20quero%20ver%20seus%20conteudos' // Grupo 3
-      ];
-      var grupoAleatorio = grupos[Math.floor(Math.random() * grupos.length)];
-      window.location.href = grupoAleatorio;
-    }
-    // Função para enviar o evento de PageView para o Facebook
-    function enviarPixel() {
-      fbq('track', 'PageView');
-    }
-  </script>
+
   <!-- Pixel do Facebook -->
   <script>
     !function(f,b,e,v,n,t,s)
@@ -61,11 +46,61 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
+    
     fbq('init', '1032225729043782');
     fbq('track', 'PageView');
   </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"/>
+  </noscript>
+
+  <script>
+    // Função para redirecionar para um grupo de WhatsApp aleatório
+    function redirecionar() {
+      var grupos = [
+        'https://wa.me/554388315304?text=Oi%2C%20quero%20ver%20seus%20conteudos', // Grupo 1
+        'https://wa.me/554388315304?text=Oi%2C%20quero%20ver%20seus%20conteudos', // Grupo 2
+        'https://wa.me/554388315304?text=Oi%2C%20quero%20ver%20seus%20conteudos' // Grupo 3
+      ];
+      var grupoAleatorio = grupos[Math.floor(Math.random() * grupos.length)];
+      
+      // Disparar evento antes do redirecionamento
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'InitiateCheckout', {
+          content_name: 'Clique para WhatsApp',
+          value: 0,
+          currency: 'BRL'
+        });
+        
+        // Pequeno delay para garantir que o evento seja enviado
+        setTimeout(function() {
+          window.location.href = grupoAleatorio;
+        }, 100);
+      } else {
+        window.location.href = grupoAleatorio;
+      }
+    }
+
+    // Função para enviar eventos adicionais
+    function enviarEventos() {
+      if (typeof fbq !== 'undefined') {
+        // Evento de visualização de conteúdo
+        fbq('track', 'ViewContent', {
+          content_name: 'Página de Redirecionamento',
+          content_type: 'page'
+        });
+      }
+    }
+
+    // Executar quando a página carregar
+    window.addEventListener('load', function() {
+      enviarEventos();
+      setTimeout(redirecionar, 5000);
+    });
+  </script>
 </head>
-<body onload="setTimeout(redirecionar, 5000); enviarPixel();">
+<body>
   <div class="loading"></div>
   <h1>Aguarde alguns segundos, vou liberar o que prometi para você...</h1>
 </body>
